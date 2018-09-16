@@ -1,0 +1,58 @@
+{5,-2,0,3,4,6}
+x={-2,5,5,3,-1,6,-3}
+n=3:3
+x=[]
+stem=(n,x)
+\\\
+n=[-10:9]
+x=[5,4,3,2,1];
+p=4;
+xy=x*ones(1,p)
+xy=(xy(:))';
+stem=(n,xy,k')
+xlabel('n')
+y label('x(n)')
+
+
+
+predictor=[0 1];
+partition=[-1:0.1:0.9];
+codebook=[-1:0.1:1];
+t=0:pi/100:2*pi;
+x=sin(pi*t);
+encodedx=dpcmenco(x,codebook,partition,predictor);
+decodedx=dpcmdeco(encodedx,codebook,predictor);
+plot(t,x,'r',t,decodedx,'k--')
+legend('Original','Recovered')
+grid on
+xlabel('time')
+ylabel('Original and Recovered signal')
+distor=sum((x-decodedx).^2)/length(x)
+
+
+Problem name:Encode a sinusoidal signal based on DPCP and 
+             recover it using previous sample as the predictor.
+
+
+Code:
+
+load mtlb
+y=mtlb;
+x=y(1:1000);
+t=1:1:length(x);
+predictor=[0 1];
+partition=[-3:0.1:3];
+codebook=[-3:0.1:3.1];
+encodedx=dpcmenco(x,codebook,partition,predictor);
+decodedx=dpcmdeco(encodedx,codebook,predictor);
+plot(t,x,'r',t,decodedx,'k--')
+legend('Original','Recovered')
+grid on
+xlabel('time')
+ylabel('Original and Recovered signal')
+
+distor=sum((x'-decodedx).^2)/length(x)
+
+
+
+
