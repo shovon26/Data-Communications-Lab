@@ -1,0 +1,44 @@
+//Digital Mudulator technique
+
+M = 2;
+N = 2000;
+x = randi([0,M-1],N,1);
+tone = 8;
+Fs=100;
+N_sam = 20;
+y= fskmod(x, M, tone, N_sam,Fs);
+z= fskmod(y, M, tone, N_sam,Fs);
+s=symerr(x,z)
+
+
+
+///////////////////////////////
+M = 2;
+N = 2000;
+x = randi([0,M-1],N,1);
+tone = 8;
+Fs=100;
+N_sam = 20;
+y= fskmod(x, M, tone, N_sam,Fs);
+z= fskdemod(y, M, tone, N_sam,Fs);
+s=symerr(x,z) 
+
+////////////////////////////
+
+M = 2;
+N = 2000;
+x = randi([0,M-1],N,1);
+tone = 8;
+Fs=100;
+N_sam = 20;
+y= fskmod(x, M, tone, N_sam,Fs);
+for i=1:20
+yr=awgn(y,-i);
+z= fskdemod(yr, M, tone, N_sam,Fs);
+s(i)=symerr(x,z)/N; 
+end
+i=1:i:20;
+plot(-i,s,'r>:')
+xlabel('SNR')
+ylabel('BER')
+grid on 
