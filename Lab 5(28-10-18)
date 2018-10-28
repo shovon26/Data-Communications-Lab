@@ -1,0 +1,96 @@
+Experiment: Analog Modulation(AM,FM)
+
+% AM modulator and demodulator
+load mtlb
+in=mtlb;
+x=in(1:500); %500 samples of speech
+Fs=18000; %sampling rate of plot
+Fc=8000; %carrier frequency
+in_phase=0;%initial phase angle
+y=ammod(x,Fc,Fs,in_phase);
+subplot(2,2,1)
+plot(x,'k'); 
+title('base band signal');
+grid on
+
+
+subplot(2,2,2)
+plot(y,'r') % AM signal
+title('AM signal');
+grid on
+
+z=demod(y,Fc,Fs,'am'); %demodulated signal
+subplot(2,2,3)
+plot(z,'k');%demodulated signal
+title('Demodulated Signal');
+grid on
+
+
+subplot(2,2,4)
+[b,a]=butter(8,0.1);
+r=filter(b,a,z);
+plot(r)
+title('Filtered Signal');
+
+grid on
+
+
+
+
+
+
+//////////////////////////////
+
+FM part
+
+%FM modulation
+fs=1000; % Sample rate(Hz)
+ts=1/fs; % Sample period(s)
+fd=25; % Frequency deviation(Hz)
+t=0:ts:2;
+t=t';
+
+x=sin(2*pi*2*t);
+M_s=comm.FMModulator('SampleRate',fs,'FrequencyDeviation',fd);
+
+y=step(M_s,x);subplot(3,1,1)
+plot(t,[x real(y)]) %plot both x and y
+
+
+
+
+%Demodulation
+DEMOD =comm.FMDemodulator('SampleRate',fs,'FrequencyDeviation',fd);
+z=step(DEMOD,y);
+subplot(2,1,2)
+plot(t,z,'Y')
+xlabel('Time (s)')
+ylabel('Amplitude')
+title('Demodulated Signal')
+grid on
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
